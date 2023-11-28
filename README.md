@@ -11,5 +11,5 @@ If you run into any bugs tell me! if you think there's features I should add, AL
 Instructions: 
 Enter in a colour into the first text box
 Then, enter one into the third/last one.
-^ It will give a range of colours between.
+It will give a range of colours between.
 You can put a colour in the middle textbox to see if it's possible to breed. This is mostly useful for large ranges of possible colours.
