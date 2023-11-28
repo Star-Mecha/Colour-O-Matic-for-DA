@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+	<title>The Colour O-Matic v0.1.4</title>
+</head>
+
+
+<h4 id="possibleOutputs"></h4>
+<br>
+First parent/colour: <input id="first" placeholder="White"></input>
+<span id="firstColour"></span>
+<span id="firstHex"></span>
+<br>
+<br>
+Target colour: <input id="target" placeholder="Felt"></input>
+<span id="targetColour"></span>
+<span id="targetHex"></span>
+<br>
+<br>
+Second parent/colour: <input id="last" placeholder="Pitch"></input>
+<span id="lastColour"></span>
+<span id="lastHex"></span>
+<br>
+<br>
+<br>
+<input type="checkbox" id="hexOn" name="hexOn" value="hexOn">
+<label for="hexOn">Turn hex on/off</label>
+
+
+
+<script type="text/javascript">
+
+	const colourList = [ "whit;White", "sno/sf;Snowflake", "whis;Whisp", "wha;Whale", "mis;Mist", "stor;Storm", "silv;Silver", "grav;Gravel", "Felt", "blues/bs;Bluesteel", "ston;Stone", "ti;Tin", "spi;Spirit", "gloo;Gloom", "coa;Coal", "gab;Gabbro", "asp;Asphalt", "Ash", "bas;Basalt", "sco;Scoria", "bo;Boulder", "Black", "pit;Pitch", "n;Night", "dep;Depth", "blackb/bb;Blackberry", "ber;Berry", "lo;Loulou", "li;Lilac", "ama;Amarklor", "grap;Grape", "Petal", "sat;Satin", "hau;Haunted", "gh;Ghost", "la;Lavender", "ame;Amethyst", "da;Dart", "pa;Pansy", "bu;Bubble", "pl;Plum", "pur;Purple", "eg;Eggplant", "mid;Midnight", "urc;Urchin", "je;Jelly", "Smog", "sap;Sapphire", "an;Angler", "blueb/bb;Bluebell", "ast;Aster", "smok;Smoke", "uranu;Uranus", "rai;Rain", "stre;Stream", "har;Harpy", "Blue", "den;Denim", "mor;Morpho", "raind/rd;Raindrop", "marin;Marine", "oc;Ocean", "dri;Drip", "coo;Cool", "sk;Sky", "clo;Cloud", "alu;Aluminum", "ir;Iron", "dre;Dream", "ab;Abyss", "tr;Trench", "tw;Twilight", "mou;Mountain", "az;Azure", "she;Shell", "ceru;Cerulean", "ic;Icecap", "wi;Winter", "glac;Glacier", "Glow", "cy;Cyan", "tur;Turquoise", "his;History", "spr;Spruce", "wat;Water", "glas;Glass", "pis;Pistachio", "do;Dolphin", "min;Mint", "seaf;Seafoam", "cat;Caterpillar", "ja;Jade", "spe;Spearmint", "es;Essence", "rainf/rf;Rainforest", "seaw;Seaweed", "alg;Algae", "fo;Forest", "hy;Hydra", "em;Emerald", "sha;Shamrock", "Pear", "ju;Jungle", "swam;Swamp", "roo;Root", "moo;Moonrock", "sna;Snake", "cam;Camo", "sca;Scale", "Ivy", "man;Mantis", "mic;Micah", "Pea", "syn;Synthesizer", "mal;Malachite", "fer;Fern", "ste;Stem", "gre;Green", "gras;Grass", "cac;Cactus", "le;Leaf", "tox;Toxin", "urani;Uranium", "cor;Corrosion", "per;Peridot", "cab;Cabbage", "chart;Chartreuse", "pr;Prehistoric", "all;Alligator", "ol;Olive", "mu;Murk", "bar;Bark", "amb;Amber", "spo;Sponge", "Haze", "swal;Swallowtail", "le;Lemon", "was;Wasp", "yo;Yolk", "ban;Banana", "ho;Honey", "sq;Squash", "sandd;Sanddollar", "me;Mellow", "ly;Lychee", "cre;Creme", "pel;Pelt", "ivo;Ivory", "pean;Peanut", "Gold", "marig;Marigold", "ap;Apricot", "po;Poppy", "ya;Yarn", "or;Orange", "peac;Peach", "Silt", "sah;Sahara", "saf;Saffron", "ches;Chestnut", "bron;Bronze", "sands;Sandstone", "carr;Carrot", "fi;Fire", "pum;Pumpkin", "su;Sunrise", "ci;Cinnamon", "cara;Caramel", "ac;Acorn", "tor;Tortilla", "hid;Hide", "bei;Beige", "pin;Pine", "so;Soil", "cof;Coffee", "Cocoa", "cho;Chocolate", "cap;Cappuccino", "bea;Beach", "gingerb/gb;Gingerbread", "map;Maple", "Hazel", "cocon;Coconut", "cla;Clay", "sab;Sable", "pen;Penny", "um;Umber", "browni;Brownie", "bi;Birch", "feld;Feldspar", "wal;Walnut", "grai;Grain", "gi;Ginger", "sta;Starfish", "brow;Brown", "sl;Slate", "au;Auburn", "cop;Copper", "rus;Rust", "tom;Tomato", "v;Vermillion", "pep;Pepper", "cher;Cherry", "cri;Crimson", "Ruby", "gar;Garnet", "sang;Sanguine", "blo;Blood", "ros;Rose", "cra;Cranberry", "re;Redwood", "stra;Strawberry", "fr;Fruit", "carm;Carmine", "ceri;Cerise", "bri;Brick", "cor;Coral", "blus;Blush", "mac;Macaron", "sak;Sakura", "fl;Flamingo", "peo;Peony", "ri;Ribbon", "Charm", "ta;Taffy", "can;Candy", "bubbleg/bg;Bubblegum", "waterm/wm;Watermelon", "mag;Magenta", "fu;Fuschia", "tul;Tulip", "rube;Rubellite", "ras;Raspberry", "syr;Syrah", "mau;Mauve", "rad;Radish", "gu;Gum", "q;Quartz", "con;Confetti", "petali/pl;Petalite", "Pearl" ]
+
+	const hexList = [ "FFFFFF", "F7F9F9", "EAEDEF", "D0CFD7", "C3C8CD", "A1ABB3", "AFAFAF", "888F8D", "9C8E8D", "6A7185", "636268", "5A6050", "545365", "595451", "4C4C4C", "4D484F", 
+						"413C40", "3B3736", "332D25", "302722", "26262C", "1A1A1B", "0E1011", "1F1A23", "22263D", "471A43", "4C2A4F", "553348", "6E235D", "551199", "863290", 
+						"9778BE", "7F6195", "5C415D", "735B77", "8E7F9E", "A794B2", "AA96A6", "E1CDFE", "CCA4E0", "DA4FFF", "9C50D3", "993BD1", "7930B5", "5317B5", "4D2C89", 
+						"3F2B66", "0D0A5B", "2B0D88", "2D237A", "484AA1", "525195", "4866D5", "757ADB", "7895C1", "444F69", "324BA9", "212B5F", "013485", "023AE2", "1C51E7", 
+						"2F83FF", "6394DD", "76A8FF", "AEC8FF", "89A4C0", "556979", "2F4557", "263746", "0D1E25", "0B2D46", "0A3D67", "094869", "2B768F", "0086CE", "00B4D5", 
+						"9CDDD3", "B3E1F1", "E0FFFF", "91FFF7", "00FFF1", "3CA2A4", "3A8684", "8DBCB4", "72C4C4", "9AEAEF", "E2FFE6", "B3FFD8", "9AFFC7", "B2E2BD", "A6DBA7", 
+						"61AB89", "148E67", "1F565D", "233253", "153F4B", "114D41", "1F483A", "005D48", "20603F", "236825", "66903C", "1E361A", "1E2716", "1F281D", "495547", 
+						"425035", "51684C", "516760", "687F67", "97AF8B", "A7B08C", "9BFF9D", "03FF7D", "87E34D", "7ECE73", "7BBD5D", "629C3F", "567C34", "8ECE56", "A5E32D", 
+						"C6FF00", "CDFE6C", "9FFF00", "E8FCB4", "D1E572", "B4CD3D", "A9A032", "828335", "697135", "4B4420", "7E7645", "C18E1B", "BEA55D", "D1B045", "D1B300", 
+						"FFE63B", "F9E255", "F7FF6F", "FFEC80", "FDD68B", "FDE9AC", "EDE8B0", "FFFDEA", "FDF1E1", "FFEFDC", "F7DEBF", "FFD297", "F6BF6C", "F2AD0C", "FFB53C", 
+						"FA912B", "FF8500", "FF984F", "FFA147", "FFB576", "FCC4AD", "F0B392", "D5602B", "CB732D", "B2560D", "B24407", "FF5500", "EF5C23", "FF6841", "FF7360", 
+						"C15A39", "C47149", "B27749", "9A7B4F", "C3996F", "CABBA2", "827A64", "6D675B", "564D48", "3C3030", "766259", "977B6C", "BFA18F", "8A6059", "7A4D4D", 
+						"774840", "6B3C34", "603E3D", "57372C", "432711", "301E1A", "22110A", "2F1B1B", "5A4534", "72573A", "855B33", "91532A", "90553A", "8E5B3F", "563012", 
+						"7B3C1D", "A44B28", "8B3220", "BA311C", "E22D18", "CE000D", "AA0024", "850012", "7A0E1E", "581014", "2D0102", "451717", "652127", "8C272D", "C1272D", 
+						"DF3236", "FC6D68", "B13A3A", "A12928", "9A534D", "CC6F6F", "FEA0A0", "FFE2E6", "FFB7B4", "FEA1B3", "FFE5E5", "FF839B", "C67A80", "D696B6", "EB799A", 
+						"FB5E79", "DB518D", "E934AA", "E7008B", "CB0381", "AA004C", "8A024A", "4D0F28", "9C4975", "C44674", "E77FBF", "E5A9FF", "E8CCFF", "FFD6F6", "FBEDFA"   ]
+
+	const elems = [ document.getElementById("first"), document.getElementById("target"), document.getElementById("last") ];
+	const outputs = [ document.getElementById("firstColour"), document.getElementById("targetColour"), document.getElementById("lastColour") ];
+	const hexes = [ document.getElementById("firstHex"), document.getElementById("targetHex"), document.getElementById("lastHex") ]
+	const hexOn = document.getElementById("hexOn");
+	const possibleOutputs = document.getElementById("possibleOutputs");
+
+	var colours = [ -1, -1, -1 ]; // [ [ "White", 0 ], [ "Whisp", 2 ], [] ]
+
+
+	function setup() {
+		for (let i = 0; i < 3; i++) {
+			elems[i].oninput = () => {
+				allFilled();
+			}
+		}
+		hexOn.onchange = () => {
+			hexes[0].innerHTML = "";
+			hexes[1].innerHTML = "";
+			hexes[2].innerHTML = "";
+			allFilled()
+		}
+	}
+
+	function allFilled() {
+		possibleOutputs.innerHTML = "";
+		for (let i = 0; i < 3; i++) {
+			// readColour returns [ "White", 0 ] or -1 if it failed.
+			colours[i] = readColour(elems[i].value);
+			if (colours[i] !== -1) {
+				// Tell the user it's inputted correctly
+				outputs[i].innerHTML = "✔ " + colours[i][0];
+				outputs[i].style.color = "green";
+				// If hexes are turned on, just add in the hex
+				if (hexOn.checked) {
+					hexes[i].innerHTML = " | " + hexList[colours[i][1]];
+					hexes[i].style.color = "#" + hexList[colours[i][1]];
+					if (hexList[colours[i][1]] == "FFFFFF" || hexList[colours[i][1]] == "F7F9F9") {
+						hexes[i].style.backgroundColor = "#999999";
+					}
+					else {
+						hexes[i].style.backgroundColor = "#FFFFFF";
+					}
+				}
+				continue;
+			}
+			// Invalid colour, reset the colour stored
+			outputs[i].style.color = "red";
+			outputs[i].innerHTML = "X";
+			if (hexOn.checked) {
+				hexes[i].innerHTML = "";
+			}
+		}
+		// If all colours are stored and set up, begin calculating
+		if (colours[0] !== -1 && colours[2] !== -1) {
+			// Only the first and last parent needs to be filled in
+			// to list out all the in-between.
+
+			let distance = (Math.abs(colours[0][1] - colours[2][1]));
+			let start;
+			// Checks to see which parent colour is the lesser, to start counting up from.
+			if (colours[0][1] < colours[2][1]) {
+				start = colours[0][1];
+			}
+			else {
+				start = colours[2][1];
+			}
+			possibleOutputs.innerHTML = "Possible colours: ";
+			for (let i = start; i < (start + distance + 1); i++) {
+				// Go through each colour and add it to the list.
+				possibleOutputs.innerHTML += colourIndex(i);
+				if (i < (start + distance)) {
+					// If it's not the last colour to add, add a comma.
+					possibleOutputs.innerHTML += ", ";
+				}
+			}
+
+			if (colours[1] !== -1) {
+				// The middle colour is filled in,
+
+				// If the middle colour is less than the first, more than the last
+				// OR if it's more than the first, less than the last
+				// Then it's valid, it is between them. 
+				if ((colours[1][1] >= colours[0][1] && colours[1][1] <= colours[2][1]) ||
+					(colours[1][1] <= colours[0][1] && colours[1][1] >= colours[2][1])) {
+					outputs[1].style.color = "blue";
+					outputs[1].innerHTML = "✔ " + colours[1][0] + " is possible!";
+				}
+				else {
+					// Not valid.
+					outputs[1].style.color = "red";
+					outputs[1].innerHTML = "X " + colours[1][0] + " is not possible.";
+				}
+			}
+		}
+	}
+
+	function colourIndex(index) {
+		if (colourList[index].includes(";")) {
+			return colourList[index].split(";")[1];
+		}
+		return colourList[index];
+	}
+
+	function readColour(text) { // Returns [ "White", i ] OR -1
+		text = text.toLowerCase();
+		for (let i = 0; i < colourList.length; i++) {
+			if (colourList[i].includes(";")) {
+				// If it has a shorthand
+				if (colourList[i].includes("/")) {
+					// If it has MULTIPLE shorthands
+					for (let j = 0; j < (colourList[i].split("/").length + 1); j++) {
+						// For each shorthand available for this colour,
+						// Split it to the shorthand side,
+						// Then split between each shorthand.
+						if (text.startsWith(colourList[i].split(";")[0].split("/")[j])) { return [colourList[i].split(";")[1], i]; }
+					}
+				}
+				// It only has one shorthand, so it splits to the shorthand side and checks.
+				else if (text.startsWith(colourList[i].split(";")[0])) { return [colourList[i].split(";")[1], i]; }
+			}
+			else {
+				// If it does NOT have a shorthand, it must be equal.
+				// This is to avoid finnicky relationships with Pear and Pearl, for instance. 
+				if (text == colourList[i].toLowerCase()) { return [colourList[i], i]; }
+			}
+		}
+		// If none of the colours matched, it will never return out of the for loop.
+		// So, it defaults to -1 once it exits.
+		return -1;
+	}
+
+	setup();
+	allFilled();
+
+</script>
+
+
+</html>
