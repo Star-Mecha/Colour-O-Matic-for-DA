@@ -3,7 +3,18 @@
 
 
 <head>
-	<title>The Colour O-Matic v0.1.4</title>
+	<title>The Colour O-Matic v0.1.4</title> <!-- By Star Mech, 12/14/23 -->
+	<!--
+		If you're reading this, hello! I hope this program is helpful!
+		I know it's not really optimized, at all, but I threw it together quickly in the hopes 
+		that while I'm working on a much better and bigger version, 
+		I could still provide something!
+
+		If you know a thing or two about programming,
+		it wouldn't be illegal for you to use and edit this for personal use.
+		Idk how copyright stuff works but just don't spread it around without permission?
+		Thx! <3
+	-->
 </head>
 
 
@@ -27,6 +38,9 @@ Second parent/colour: <input id="last" placeholder="Pitch"></input>
 <br>
 <input type="checkbox" id="hexOn" name="hexOn" value="hexOn">
 <label for="hexOn">Turn hex on/off</label>
+<br>
+<input type="checkbox" id="distanceOn" name="distanceOn" value="distanceOn">
+<label for="distanceOn">Show distance on/off</label>
 
 
 
@@ -55,6 +69,7 @@ Second parent/colour: <input id="last" placeholder="Pitch"></input>
 	const outputs = [ document.getElementById("firstColour"), document.getElementById("targetColour"), document.getElementById("lastColour") ];
 	const hexes = [ document.getElementById("firstHex"), document.getElementById("targetHex"), document.getElementById("lastHex") ]
 	const hexOn = document.getElementById("hexOn");
+	const distanceOn = document.getElementById("distanceOn");
 	const possibleOutputs = document.getElementById("possibleOutputs");
 
 	var colours = [ -1, -1, -1 ]; // [ [ "White", 0 ], [ "Whisp", 2 ], [] ]
@@ -67,11 +82,18 @@ Second parent/colour: <input id="last" placeholder="Pitch"></input>
 			}
 		}
 		hexOn.onchange = () => {
-			hexes[0].innerHTML = "";
-			hexes[1].innerHTML = "";
-			hexes[2].innerHTML = "";
-			allFilled()
+			reset();
 		}
+		distanceOn.onchange = () => {
+			reset();
+		}
+	}
+
+	function reset() {
+		hexes[0].innerHTML = "";
+		hexes[1].innerHTML = "";
+		hexes[2].innerHTML = "";
+		allFilled()
 	}
 
 	function allFilled() {
@@ -117,7 +139,12 @@ Second parent/colour: <input id="last" placeholder="Pitch"></input>
 			else {
 				start = colours[2][1];
 			}
-			possibleOutputs.innerHTML = "Possible colours: ";
+			if (distanceOn.checked) {
+				possibleOutputs.innerHTML = "Possible colours (" + (+distance + 1) + "): ";
+			}
+			else {
+				possibleOutputs.innerHTML = "Possible colours: ";
+			}
 			for (let i = start; i < (start + distance + 1); i++) {
 				// Go through each colour and add it to the list.
 				possibleOutputs.innerHTML += colourIndex(i);
